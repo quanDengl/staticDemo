@@ -3,10 +3,9 @@ import App from './App.vue';
 import router from './routers';
 import store from './stores';
 
-// vant组件的引入
-import Vant from 'vant';
-import 'vant/lib/index.css';
-Vue.use(Vant);
+// 引入axios请求模块
+import axios from 'axios'
+Vue.prototype.axios = axios
 
 Vue.config.productionTip = false;
 

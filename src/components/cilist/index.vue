@@ -1,7 +1,8 @@
 <template>
   <div class="cinema_body">
-    <ul>
-      <!-- <li>
+    <scroller>
+      <ul>
+        <!-- <li>
         <div>
           <span>大地影院(澳东世纪店)</span>
           <span class="q">
@@ -16,23 +17,29 @@
           <div>小吃</div>
           <div>折扣卡</div>
         </div>
-      </li>-->
-      <li v-for="item in cinemaList" :key="item.id">
-        <div>
-          <span>{{item.nm}}</span>
-          <span class="q">
-            <span class="price">{{item.sellPrice}}</span> 元起
-          </span>
-        </div>
-        <div class="address">
-          <span>{{item.addr}}</span>
-          <span>{{item.distance}}</span>
-        </div>
-        <div class="card">
-          <div :class=" key | classCard" v-if="num === 1" v-for="(num,key) in item.tag" :key="key">{{key | formatCard}}</div>
-        </div>
-      </li>
-    </ul>
+        </li>-->
+        <li v-for="item in cinemaList" :key="item.id">
+          <div>
+            <span>{{item.nm}}</span>
+            <span class="q">
+              <span class="price">{{item.sellPrice}}</span> 元起
+            </span>
+          </div>
+          <div class="address">
+            <span>{{item.addr}}</span>
+            <span>{{item.distance}}</span>
+          </div>
+          <div class="card">
+            <div
+              :class=" key | classCard"
+              v-if="num === 1"
+              v-for="(num,key) in item.tag"
+              :key="key"
+            >{{key | formatCard}}</div>
+          </div>
+        </li>
+      </ul>
+    </scroller>
   </div>
 </template>
 <script>
@@ -85,8 +92,12 @@ export default {
 </script>
 <style scoped>
 #content .cinema_body {
-  flex: 1;
-  overflow: auto;
+  width: 100%;
+  position: fixed;
+  top: 90px;
+  bottom: 50px; /*关键*/
+  overflow: hidden;
+  z-index: 1;
 }
 .cinema_body ul {
   padding: 20px;

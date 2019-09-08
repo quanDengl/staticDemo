@@ -1,25 +1,27 @@
 <template>
   <div id="content">
     <div class="movie_body">
-      <ul>
-        <li v-for="item in comingList" :key="item.id">
-          <div class="pic_show">
-            <img :src="item.img | setWH('128.180')" />
-          </div>
-          <div class="info_list">
-            <h2>
-              {{item.nm}}
-              <img v-if="item.version" src="@/assets/images/maxs.png" />
-            </h2>
-            <p>
-              <span class="person">{{item.wish}}</span> 人想看
-            </p>
-            <p>主演: {{item.star}}</p>
-            <p>{{item.rt}}上映</p>
-          </div>
-          <div class="btn_pre">预售</div>
-        </li>
-      </ul>
+      <scroller>
+        <ul>
+          <li v-for="item in comingList" :key="item.id">
+            <div class="pic_show">
+              <img :src="item.img | setWH('128.180')" />
+            </div>
+            <div class="info_list">
+              <h2>
+                {{item.nm}}
+                <img v-if="item.version" src="@/assets/images/maxs.png" />
+              </h2>
+              <p>
+                <span class="person">{{item.wish}}</span> 人想看
+              </p>
+              <p>主演: {{item.star}}</p>
+              <p>{{item.rt}}上映</p>
+            </div>
+            <div class="btn_pre">预售</div>
+          </li>
+        </ul>
+      </scroller>
     </div>
   </div>
 </template>
@@ -43,8 +45,12 @@ export default {
 </script>
 <style scoped>
 #content .movie_body {
-  flex: 1;
-  overflow: auto;
+  width: 100%;
+  position: fixed;
+  top: 90px;
+  bottom: 50px; /*关键*/
+  overflow: hidden;
+  z-index: 1;
 }
 .movie_body ul {
   margin: 0 12px;

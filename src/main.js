@@ -12,6 +12,10 @@ Vue.filter('setWH', (url, arg) => {
   return url.replace(/w\.h/, arg);
 })
 
+// 定义一个全局组件
+import scroller from '@/components/scroll';
+Vue.component('scroller', scroller);
+
 Vue.config.productionTip = false;
 
 new Vue({

@@ -22,23 +22,27 @@
       </ul>
     </div>-->
     <div class="city_list">
-      <div class="city_hot">
-        <h2>热门城市</h2>
-        <ul class="clearfix">
-          <li v-for="item in hotList" :key="item.id">{{item.nm}}</li>
-        </ul>
-      </div>
-      <div class="city_sort" ref="city_sort">
-        <div v-for="item in cityList" :key="item.index">
-          <h2>{{item.index}}</h2>
-          <ul>
-            <li v-for="itemList in item.list" :key="itemList.id">{{itemList.nm}}</li>
-          </ul>
+      <scroller ref="city_list">
+        <div>
+          <div class="city_hot">
+            <h2>热门城市</h2>
+            <ul class="clearfix">
+              <li v-for="item in hotList" :key="item.id">{{item.nm}}</li>
+            </ul>
+          </div>
+          <div class="city_sort" ref="city_sort">
+            <div v-for="item in cityList" :key="item.index">
+              <h2>{{item.index}}</h2>
+              <ul>
+                <li v-for="itemList in item.list" :key="itemList.id">{{itemList.nm}}</li>
+              </ul>
+            </div>
+          </div>
         </div>
-      </div>
+      </scroller>
     </div>
     <div class="city_index">
-      <ul style="position: fixed;top: 18%;right: 5px;">
+      <ul style="position: fixed;top: 18%;right: 5px;z-index:2">
         <li
           v-for="(item,index) in cityList"
           :key="item.index"
@@ -120,8 +124,9 @@ export default {
       };
     },
     handleToIndex(index) {
-      // var h2 = this.$refs.city_sort.getElementsByTagName("h2");
+      var h2 = this.$refs.city_sort.getElementsByTagName("h2");
       // this.$refs.city_sort.parentNode.scrollTop = h2[index].offsetTop;
+      this.$refs.city_list.toScrollTop(-h2[index].offsetTop);
     }
   }
 };
@@ -132,8 +137,12 @@ export default {
   width: 100%;
 }
 .city_body .city_list {
-  flex: 1;
-  overflow: auto;
+  width: 93%;
+  position: fixed;
+  top: 90px;
+  bottom: 50px; /*关键*/
+  overflow: hidden;
+  z-index: 1;
   background: #fff5f0;
 }
 .city_body .city_list::-webkit-scrollbar {

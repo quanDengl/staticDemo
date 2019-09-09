@@ -27,14 +27,22 @@
           <div class="city_hot">
             <h2>热门城市</h2>
             <ul class="clearfix">
-              <li v-for="item in hotList" :key="item.id">{{item.nm}}</li>
+              <li
+                v-for="item in hotList"
+                :key="item.id"
+                @tap="handleToCity(item.nm,item.id)"
+              >{{item.nm}}</li>
             </ul>
           </div>
           <div class="city_sort" ref="city_sort">
             <div v-for="item in cityList" :key="item.index">
               <h2>{{item.index}}</h2>
               <ul>
-                <li v-for="itemList in item.list" :key="itemList.id">{{itemList.nm}}</li>
+                <li
+                  v-for="itemList in item.list"
+                  :key="itemList.id"
+                  @tap="handleToCity(itemList.nm,itemList.id)"
+                >{{itemList.nm}}</li>
               </ul>
             </div>
           </div>
@@ -62,14 +70,26 @@ export default {
     };
   },
   mounted() {
+    var cityList = window.localStorage.getItem("cityList");
+    var hotList = window.localStorage.getItem("hotList");
+
+    if (cityList && hotList) {
+      this.cityList = JSON.parse(cityList);
+      this.hotList = JSON.parse(hotList);
+      this.isLoading = false;
+    }
+
     this.axios.get("/api/cityList").then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
+        this.isLoading = false;
         var cities = res.data.data.cities;
         // [{ index: "A", list: [{ id: 1, nm: "阿城" }] }];
         var { cityList, hotList } = this.formatCityList(cities); // 解构赋值
         this.cityList = cityList;
         this.hotList = hotList;
+        window.localStorage.setItem("cityList", JSON.stringify(cityList));
+        window.localStorage.setItem("hotList", JSON.stringify(hotList));
       }
     });
   },
@@ -127,6 +147,13 @@ export default {
       var h2 = this.$refs.city_sort.getElementsByTagName("h2");
       // this.$refs.city_sort.parentNode.scrollTop = h2[index].offsetTop;
       this.$refs.city_list.toScrollTop(-h2[index].offsetTop);
+    },
+    handleToCity(nm, id) {
+      console.log(123);
+      this.$store.commit("city/CITY_INFO", { nm, id });
+      window.localStorage.setItem("nowNm", nm);
+      window.localStorage.setItem("nowId", id);
+      this.$router.push("/movie/newPlaying");
     }
   }
 };

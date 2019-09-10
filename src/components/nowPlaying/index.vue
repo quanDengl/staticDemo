@@ -33,14 +33,24 @@ export default {
   data() {
     return {
       movieList: [],
-      pullDownMsg: ""
+      pullDownMsg: "",
+      isLoading: true,
+      prevCityId: -1
     };
   },
-  mounted() {
-    this.axios.get("/api/movieOnInfoList?cityId=10").then(res => {
+  activated() {
+    // 没有改变就return，改变了就重新请求
+    var cityId = this.$store.state.city.id;
+    if (this.prevCityId === cityId) {
+      return;
+    }
+    this.isLoading = true;
+    this.axios.get("/api/movieOnInfoList?cityId=" + cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.movieList = res.data.data.movieList;
+        this.isLoading = false;
+        this.prevCityId = cityId;
         // this.$nextTick(() => {
         //   var scroll = new BScroll(this.$refs.movie_body, {
         //     tap: true,

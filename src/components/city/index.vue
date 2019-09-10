@@ -149,7 +149,6 @@ export default {
       this.$refs.city_list.toScrollTop(-h2[index].offsetTop);
     },
     handleToCity(nm, id) {
-      console.log(123);
       this.$store.commit("city/CITY_INFO", { nm, id });
       window.localStorage.setItem("nowNm", nm);
       window.localStorage.setItem("nowId", id);

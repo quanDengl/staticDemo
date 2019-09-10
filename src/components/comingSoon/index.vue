@@ -30,14 +30,24 @@ export default {
   name: "comingSoon",
   data() {
     return {
-      comingList: []
+      comingList: [],
+      isLoading: true,
+      prevCityId: -1
     };
   },
-  mounted() {
-    this.axios.get("/api/movieComingList?cityId=10").then(res => {
+  activated() {
+    // 没有改变就return，改变了就重新请求
+    var cityId = this.$store.state.city.id;
+    if (this.prevCityId === cityId) {
+      return;
+    }
+    this.isLoading = true;
+    this.axios.get("/api/movieComingList?cityId=" + cityId).then(res => {
       var msg = res.data.msg;
       if (msg === "ok") {
         this.comingList = res.data.data.comingList;
+        this.isLoading = false;
+        this.prevCityId = cityId;
       }
     });
   }

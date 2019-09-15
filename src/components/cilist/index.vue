@@ -52,21 +52,29 @@ export default {
       prevCityId: -1
     };
   },
+  created() {
+    this.getListData();
+  },
   activated() {
-    // 没有改变就return，改变了就重新请求
-    var cityId = this.$store.state.city.id;
-    if (this.prevCityId === cityId) {
-      return;
-    }
-    this.isLoading = true;
-    this.axios.get("/api/cinemaList?cityId=" + cityId).then(res => {
-      var msg = res.data.msg;
-      if (msg === "ok") {
-        this.cinemaList = res.data.data.cinemas;
-        this.isLoading = false;
-        this.prevCityId = cityId;
+    this.getListData();
+  },
+  methods: {
+    getListData() {
+      // 没有改变就return，改变了就重新请求
+      var cityId = this.$store.state.city.id;
+      if (this.prevCityId === cityId) {
+        return;
       }
-    });
+      this.isLoading = true;
+      this.axios.get("/api/cinemaList?cityId=" + cityId).then(res => {
+        var msg = res.data.msg;
+        if (msg === "ok") {
+          this.cinemaList = res.data.data.cinemas;
+          this.isLoading = false;
+          this.prevCityId = cityId;
+        }
+      });
+    }
   },
   filters: {
     formatCard(key) {

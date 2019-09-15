@@ -25,9 +25,11 @@
 
     <!-- 底部 -->
     <footers></footers>
+    <router-view name="detail" />
   </div>
 </template>
 <script>
+import { messageBox } from "@/components/js";
 export default {
   name: "movie",
   components: {
@@ -35,6 +37,31 @@ export default {
       import(/* webpackChunkName: 'CommonBase' */ "@/components/headers"),
     footers: () =>
       import(/* webpackChunkName: 'CommonBase' */ "@/components/footers")
+  },
+  mounted() {
+    setTimeout(() => {
+      this.axios.get("/api/getLocation").then(res => {
+        var msg = res.data.msg;
+        if (msg === "ok") {
+          var nm = res.data.data.nm;
+          var id = res.data.data.id;
+          if (Number(this.$store.state.city.id) === id) {
+            return;
+          }
+          messageBox({
+            title: "定位",
+            content: nm,
+            cancel: "取消",
+            ok: "切换定位",
+            handleOk() {
+              window.localStorage.setItem("nowNm", nm);
+              window.localStorage.setItem("nowId", id);
+              window.location.reload();
+            }
+          });
+        }
+      });
+    }, 3000);
   }
 };
 </script>

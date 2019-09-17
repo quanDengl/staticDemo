@@ -1,5 +1,5 @@
 <template>
-  <div id="detail-container">
+  <div id="detail-container" class="slide-enter-active">
     <headers title="影片详情">
       <i @touchstart="handleToBack" class="iconfont icon-right"></i>
     </headers>
@@ -100,6 +100,17 @@ export default {
   width: 100%;
   min-height: 100%;
   background: #fff;
+}
+#detail-container.slide-enter-active {
+  animation: slideMove 0.3s;
+}
+@keyframes slideMove {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
 }
 #content.contentDetail {
   display: block;
